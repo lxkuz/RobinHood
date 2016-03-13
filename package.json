@@ -1,0 +1,26 @@
+{
+  "name": "robinhood",
+  "version": "0.0.1",
+  "description": "Rates strategy testing utility",
+  "main": "index.js",
+  "scripts": {
+    "test": "test",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lxkuz/RobinHood.git"
+  },
+  "author": "lxkuz",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lxkuz/RobinHood/issues"
+  },
+  "homepage": "https://github.com/lxkuz/RobinHood#readme",
+  "dependencies": {
+    "casperjs": "^1.1.0-beta5",
+    "config": "^1.19.0",
+    "spooky": "^0.2.5",
+    "tiny-jsonrpc": "^2.0.1"
+  }
+}
