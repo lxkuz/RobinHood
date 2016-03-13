@@ -1,5 +1,6 @@
 var Spooky = require('spooky');
 var config = require('config');
+
 var spooky = new Spooky({
     child: {
         transport: 'http'
@@ -16,17 +17,26 @@ var spooky = new Spooky({
     }
 
     spooky.start(config.siteUrl);
-    spooky.then(function () {
-        this.capture('out/google.png', {
-            top: 100,
-            left: 100,
-            width: 500,
-            height: 400
+    //spooky.options.clientScripts = ["./client_scripts/test.js"]
+    spooky.then([{config: config}, function(){
+        this.fillSelectors('form#fLogin2', {
+            'input#userLogin': config.login,
+            'input#userPassword': config.password
         });
-        this.emit('hello', 'Hello, from ' + this.evaluate(function () {
-                return document.title;
-            }));
-    });
+        this.click("#userConButton");
+        this.wait(3000, function () {
+            var nextUrl = config.siteUrl + "/office/account/";
+            this.thenOpen(nextUrl, function(){
+                this.capture('out/result.png', {
+                    top: 0,
+                    left: 0,
+                    width: 2000,
+                    height: 1000
+                });
+            })
+
+        });
+    }]);
     spooky.run();
 });
 
@@ -38,17 +48,9 @@ spooky.on('error', function (e, stack) {
     }
 });
 
-/*
- // Uncomment this block to see all of the things Casper has to say.
- // There are a lot.
- // He has opinions.
- spooky.on('console', function (line) {
- console.log(line);
- });
- */
 
-spooky.on('hello', function (greeting) {
-    console.log(greeting);
+spooky.on('console', function (line) {
+    console.log(line);
 });
 
 spooky.on('log', function (log) {
