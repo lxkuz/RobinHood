@@ -1,0 +1,8 @@
+var Lives = [
+    {
+        url: "line/Basketball/10021-Euroleague-Basketball-Women/4314951-UGMK-Women-Galatasaray-Medical-Park-Women/"
+    }
+];
+
+
+module.exports = Lives
