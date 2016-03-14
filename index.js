@@ -1,5 +1,6 @@
 var Spooky = require('spooky');
 var config = require('config');
+var Lives = require("./config/lives");
 
 var spooky = new Spooky({
     child: {
@@ -18,24 +19,32 @@ var spooky = new Spooky({
 
     spooky.start(config.siteUrl);
     //spooky.options.clientScripts = ["./client_scripts/test.js"]
-    spooky.then([{config: config}, function(){
+    spooky.then([{config: config, Lives: Lives}, function(){
         this.fillSelectors('form#fLogin2', {
             'input#userLogin': config.login,
             'input#userPassword': config.password
         });
         this.click("#userConButton");
+        //while(true){
         this.wait(3000, function () {
-            var nextUrl = config.siteUrl + "/office/account/";
-            this.thenOpen(nextUrl, function(){
-                this.capture('out/result.png', {
-                    top: 0,
-                    left: 0,
-                    width: 2000,
-                    height: 1000
+            var nextUrl = config.siteUrl + "/" + Lives[0].url;
+            this.thenOpen(nextUrl, function () {
+                this.click("#one_click");
+                this.fillSelectors(".sports_widget", {
+                    'input.input_one_click': config.minbet
                 });
-            })
+                this.wait(1000, function(){
+                    this.capture('out/result.png', {
+                        top: 0,
+                        left: 0,
+                        width: 2000,
+                        height: 1000
+                    });
+                });
 
+            })
         });
+        //}
     }]);
     spooky.run();
 });
@@ -53,8 +62,8 @@ spooky.on('console', function (line) {
     console.log(line);
 });
 
-spooky.on('log', function (log) {
-    if (log.space === 'remote') {
-        console.log(log.message.replace(/ \- .*/, ''));
-    }
-});
+//spooky.on('log', function (log) {
+//    if (log.space === 'remote') {
+//        console.log(log.message.replace(/ \- .*/, ''));
+//    }
+//});
