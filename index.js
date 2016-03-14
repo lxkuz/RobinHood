@@ -33,6 +33,10 @@ var spooky = new Spooky({
                 this.fillSelectors(".sports_widget", {
                     'input.input_one_click': config.minbet
                 });
+                this.click("a.input_one_click_but");
+                this.wait(100, function(){
+                    this.click(".ui-widget button");
+                });
                 this.wait(1000, function(){
                     this.capture('out/result.png', {
                         top: 0,
