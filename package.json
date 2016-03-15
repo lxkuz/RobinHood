@@ -20,6 +20,7 @@
   "dependencies": {
     "casperjs": "^1.1.0-beta5",
     "config": "^1.19.0",
+    "node-telegram-bot-api": "^0.21.1",
     "spooky": "^0.2.5",
     "tiny-jsonrpc": "^2.0.1"
   }
