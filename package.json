@@ -2,7 +2,7 @@
   "name": "robinhood",
   "version": "0.0.1",
   "description": "Rates strategy testing utility",
-  "main": "index.js",
+  "main": "telegram.js",
   "scripts": {
     "test": "test",
     "start": "node telegram.js"
