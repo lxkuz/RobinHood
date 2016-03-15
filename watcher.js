@@ -17,7 +17,7 @@ var RobinHoodWatcher = function(gameUrl, callback) {
             e.details = err;
             throw e;
         }
-        var nextUrl = config.siteUrl + "/" + gameUrl;
+        var nextUrl = gameUrl;
         spooky.on("game-is-ready", callback);
         spooky.start(nextUrl, function(){
             var data = {

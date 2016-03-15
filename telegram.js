@@ -1,5 +1,4 @@
 var TelegramBot = require('node-telegram-bot-api');
-var config = require('config');
 var RobinHoodWatcher = require("./watcher");
 
 var token = '167232741:AAHFF9i8Nl1QZhtgsYL3mLrcPvPw8PSfzKI';
@@ -19,7 +18,6 @@ bot.on('message', function (msg) {
     if (msg.text.match(/watch/)) {
         var url = msg.text.split("watch ")[1];
         RobinHoodWatcher(url, function(data){
-            console.log("success callback");
             var arr = [];
             if (data["p1"]) {
                 arr.push("П1 - " + data["p1"]);
