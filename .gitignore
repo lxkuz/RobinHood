@@ -41,3 +41,6 @@ out/*.png
 #config
 config/default.json
 config/lives.js
+
+#DB
+db
