@@ -1,0 +1,14 @@
+html
+    head
+        title!= title
+    body
+        for arr, name in data
+            h2!= name
+            table
+                tr
+                    td П1
+                    td П2
+                for obj in arr
+                    tr
+                        td= obj.p1
+                        td= obj.p2

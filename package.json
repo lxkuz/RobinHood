@@ -6,7 +6,8 @@
   "scripts": {
     "test": "test",
     "start": "node build/lib/telegram.js",
-    "watch": "coffee -w -c -o build src"
+    "watch": "coffee -w -c -o build src",
+    "server": "node build/server/index.js"
   },
   "repository": {
     "type": "git",
@@ -21,6 +22,8 @@
   "dependencies": {
     "casperjs": "^1.1.0-beta5",
     "config": "^1.19.0",
+    "express": "^4.13.4",
+    "jade": "^1.11.0",
     "locallydb": "0.0.9",
     "mongoose": "^4.4.7",
     "node-telegram-bot-api": "^0.21.1",

@@ -3,9 +3,10 @@ config = require 'config'
 Recorder = require './recorder'
 
 class RobinHoodWatcher
-  constructor: (gameUrl) ->
+  constructor: (gameUrl, callback) ->
     console.log "watch start #{gameUrl}"
     @gameUrl = gameUrl
+    @callback = callback
     spooky = new Spooky
       child: transport: 'http'
       casper:
@@ -18,13 +19,18 @@ class RobinHoodWatcher
         e.details = err
         throw e
 
-      spooky.on 'game-is-ready', Recorder.push
+      spooky.on 'game-is-ready', (data) =>
+        Recorder.push(@gameUrl, data)
+        @callback(data)
       spooky.start @gameUrl, ->
-        @wait 5000, ->
-          console.log @fetchText "#robinhood-info-module"
-          data = JSON.parse(@fetchText "#robinhood-info-module")
-          @emit 'game-is-ready', data
-
+        func = (->
+          try
+            data = JSON.parse(@fetchText "#robinhood-info-module")
+            @emit 'game-is-ready', data
+        ).bind @
+        setInterval func, 10000
+        @wait 1000000, ->
+          console.log 'done'
       spooky.run()
 
       spooky.on 'error', (e, stack) ->

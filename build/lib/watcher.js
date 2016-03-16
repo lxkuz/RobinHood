@@ -9,10 +9,11 @@
   Recorder = require('./recorder');
 
   RobinHoodWatcher = (function() {
-    function RobinHoodWatcher(gameUrl) {
+    function RobinHoodWatcher(gameUrl, callback) {
       var spooky;
       console.log("watch start " + gameUrl);
       this.gameUrl = gameUrl;
+      this.callback = callback;
       spooky = new Spooky({
         child: {
           transport: 'http'
@@ -30,13 +31,22 @@
             e.details = err;
             throw e;
           }
-          spooky.on('game-is-ready', Recorder.push);
+          spooky.on('game-is-ready', function(data) {
+            Recorder.push(_this.gameUrl, data);
+            return _this.callback(data);
+          });
           spooky.start(_this.gameUrl, function() {
-            return this.wait(5000, function() {
+            var func;
+            func = (function() {
               var data;
-              console.log(this.fetchText("#robinhood-info-module"));
-              data = JSON.parse(this.fetchText("#robinhood-info-module"));
-              return this.emit('game-is-ready', data);
+              try {
+                data = JSON.parse(this.fetchText("#robinhood-info-module"));
+                return this.emit('game-is-ready', data);
+              } catch (undefined) {}
+            }).bind(this);
+            setInterval(func, 10000);
+            return this.wait(1000000, function() {
+              return console.log('done');
             });
           });
           spooky.run();

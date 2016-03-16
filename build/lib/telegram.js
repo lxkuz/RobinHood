@@ -20,11 +20,32 @@
   });
 
   bot.on('message', function(msg) {
-    var chatId, url;
+    var chatId, lastMessage, url;
     chatId = msg.chat.id;
     if (msg.text.match(/watch/)) {
       url = msg.text.split('watch ')[1];
-      return new RobinHoodWatcher(url);
+      lastMessage = "";
+      return new RobinHoodWatcher(url, function(data) {
+        var arr;
+        arr = [];
+        if (data['p1']) {
+          arr.push('П1 - ' + data['p1']);
+        }
+        if (data['x']) {
+          arr.push('X - ' + data['x']);
+        }
+        if (data['p2']) {
+          arr.push('П2 - ' + data['p2']);
+        }
+        console.log('new message');
+        console.log(arr.join(', '));
+        console.log('lastMessage');
+        console.log(lastMessage);
+        if (lastMessage !== arr.join(', ')) {
+          lastMessage = arr.join(', ');
+          return bot.sendMessage(chatId, lastMessage);
+        }
+      });
     } else {
       return bot.sendMessage(chatId, ';)');
     }

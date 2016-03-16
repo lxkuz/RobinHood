@@ -7,16 +7,34 @@
 
   Recorder = (function() {
     function Recorder() {
+      this.getData = bind(this.getData, this);
       this.push = bind(this.push, this);
       console.log("new recorder");
       this.db = new locallydb('db');
       this.events = this.db.collection('events');
     }
 
-    Recorder.prototype.push = function(data) {
-      console.log("push data");
-      console.log(data);
-      return this.events.insert(data);
+    Recorder.prototype.push = function(url, data) {
+      data["url"] = url;
+      if (!this.last || (this.last.url !== data.url) || (data.p1 !== this.last.p1) || (data.p2 !== this.last.p2)) {
+        this.events.insert(data);
+        return this.last = data;
+      }
+    };
+
+    Recorder.prototype.getData = function() {
+      var event, i, len, name, ref, res;
+      res = {};
+      ref = this.events.items;
+      for (i = 0, len = ref.length; i < len; i++) {
+        event = ref[i];
+        name = event.name;
+        if (!res[name]) {
+          res[name] = [];
+        }
+        res[name].push(event);
+      }
+      return res;
     };
 
     return Recorder;
