@@ -27,6 +27,7 @@
     "locallydb": "0.0.9",
     "mongoose": "^4.4.7",
     "node-telegram-bot-api": "^0.21.1",
+    "require-reload": "^0.2.2",
     "spooky": "^0.2.5",
     "tiny-jsonrpc": "^2.0.1"
   },

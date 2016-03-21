@@ -12,7 +12,12 @@ class RobinHoodWatcher
       casper:
         logLevel: 'debug'
         verbose: true
-        clientScripts: ["build/client/viewer.js"]
+        remoteDebuggerAutorun: true
+        remoteDebuggerPort: 9000
+        pageSettings:
+          javascriptEnabled: true
+
+      clientScripts: ["build/client/viewer.js"]
     , (err) =>
       if err
         e = new Error('Failed to initialize SpookyJS')
@@ -24,12 +29,19 @@ class RobinHoodWatcher
         @callback(data)
       spooky.start @gameUrl, ->
         func = (->
+          console.log('interval func')
           try
             data = JSON.parse(@fetchText "#robinhood-info-module")
             @emit 'game-is-ready', data
         ).bind @
-        setInterval func, 10000
-        @wait 1000000, ->
+        setInterval func, 5000
+        @wait 100000, ->
+          @capture 'out/result.png',
+            top: 0,
+            left: 0,
+            width: 2000,
+            height: 1000
+
           console.log 'done'
       spooky.run()
 

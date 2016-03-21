@@ -21,8 +21,13 @@
         casper: {
           logLevel: 'debug',
           verbose: true,
-          clientScripts: ["build/client/viewer.js"]
-        }
+          remoteDebuggerAutorun: true,
+          remoteDebuggerPort: 9000,
+          pageSettings: {
+            javascriptEnabled: true
+          }
+        },
+        clientScripts: ["build/client/viewer.js"]
       }, (function(_this) {
         return function(err) {
           var e;
@@ -39,13 +44,20 @@
             var func;
             func = (function() {
               var data;
+              console.log('interval func');
               try {
                 data = JSON.parse(this.fetchText("#robinhood-info-module"));
                 return this.emit('game-is-ready', data);
               } catch (undefined) {}
             }).bind(this);
-            setInterval(func, 10000);
-            return this.wait(1000000, function() {
+            setInterval(func, 5000);
+            return this.wait(100000, function() {
+              this.capture('out/result.png', {
+                top: 0,
+                left: 0,
+                width: 2000,
+                height: 1000
+              });
               return console.log('done');
             });
           });

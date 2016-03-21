@@ -1,10 +1,11 @@
 express = require('express')
+reload = require('require-reload')(require)
 app = express()
 
 app.set('view engine', 'jade')
 
 app.get '/', (req, res) ->
-  Recorder = require('./../lib/recorder')
+  Recorder = reload('./../lib/recorder')
   res.render 'index',
     title: 'RobinHoodXbet'
     data: Recorder.getData()
