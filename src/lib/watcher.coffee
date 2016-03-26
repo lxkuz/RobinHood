@@ -1,5 +1,7 @@
 Spooky = require 'spooky'
 config = require 'config'
+_ = require 'underscore'
+
 Recorder = require './recorder'
 
 class RobinHoodWatcher
@@ -12,11 +14,7 @@ class RobinHoodWatcher
       casper:
         logLevel: 'debug'
         verbose: true
-        remoteDebuggerAutorun: true
-        remoteDebuggerPort: 9000
-        pageSettings:
-          javascriptEnabled: true
-
+        waitTimeout: 10000
       clientScripts: ["build/client/viewer.js"]
     , (err) =>
       if err
@@ -24,25 +22,63 @@ class RobinHoodWatcher
         e.details = err
         throw e
 
+      pageLoadedCallback = ->
+        console.log 'pageLoadedCallback...'
+        @waitForSelector '#robinhood-info-module', ->
+          console.log '@waitForSelector success...'
+          data = JSON.parse(@fetchText "#robinhood-info-module")
+          @emit 'game-is-ready', data
+
       spooky.on 'game-is-ready', (data) =>
-        Recorder.push(@gameUrl, data)
-        @callback(data)
-      spooky.start @gameUrl, ->
-        func = (->
-          console.log('interval func')
-          try
-            data = JSON.parse(@fetchText "#robinhood-info-module")
-            @emit 'game-is-ready', data
-        ).bind @
-        setInterval func, 5000
-        @wait 100000, ->
+        console.log 'game-is-ready'
+        Recorder.push @gameUrl, data
+        @callback data
+        #        @thenOpen @gameUrl, pageLoadedCallback
+
+      startCallback = ->
+        console.log 'pageLoadedCallback...'
+        #        console.log @waitForSelector
+        #        @waitForSelector '#robinhood-info-module', ->
+        #          console.log '@waitForSelector success...'
+        #          data = JSON.parse(@fetchText "#robinhood-info-module")
+        #          @emit 'game-is-ready', data
+        @wait 3000, ->
           @capture 'out/result.png',
             top: 0,
             left: 0,
             width: 2000,
             height: 1000
 
-          console.log 'done'
+      spooky.start @gameUrl
+      spooky.then startCallback
+
+
+      #        reloadPage = (->
+      #          console.log('reload page')
+      #          clearInterval getPageDataInterval if getPageDataInterval
+      #          getPageDataInterval = setInterval getPageData, 1000
+      #          setTimeout (->
+      #            console.log('setTimeout 5000' )
+      #            @thenOpen gameUrl, reloadPage
+      #          ).bind(@), 5000
+      #        ).bind @
+      #
+      #        getPageData = (->
+      #          console.log('get page data')
+      #          try
+      #        ).bind @
+      #
+      #        reloadPage()
+      #
+      #        @wait 100000, ->
+      #          @capture 'out/result.png',
+      #            top: 0,
+      #            left: 0,
+      #            width: 2000,
+      #            height: 1000
+      #
+      #          console.log 'done'
+
       spooky.run()
 
       spooky.on 'error', (e, stack) ->

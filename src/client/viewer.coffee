@@ -1,4 +1,6 @@
 $ ->
+  $("<div id='#{id}' style='display:none;'>").appendTo $('body')
+
   currentDate = ->
     d = new Date()
     curr_date = d.getDate()
@@ -7,10 +9,8 @@ $ ->
     "#{curr_date}.#{curr_month}.#{curr_year}"
 
   setInterval ->
-    id = "robinhood-info-module"
     if $(".bet_group:first .bets span.koeff:first").length > 0
       infoContainer = if $("##{id}").length is 0
-        $("<div id='#{id}' style='display:none;'>").appendTo $('body')
       else
         $("##{id}")
       data =

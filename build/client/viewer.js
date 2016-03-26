@@ -2,6 +2,7 @@
 (function() {
   $(function() {
     var currentDate;
+    $("<div id='" + id + "' style='display:none;'>").appendTo($('body'));
     currentDate = function() {
       var curr_date, curr_month, curr_year, d;
       d = new Date();
@@ -11,10 +12,9 @@
       return curr_date + "." + curr_month + "." + curr_year;
     };
     return setInterval(function() {
-      var data, id, infoContainer;
-      id = "robinhood-info-module";
+      var data, infoContainer;
       if ($(".bet_group:first .bets span.koeff:first").length > 0) {
-        infoContainer = $("#" + id).length === 0 ? $("<div id='" + id + "' style='display:none;'>").appendTo($('body')) : $("#" + id);
+        infoContainer = $("#" + id).length === 0 ? void 0 : $("#" + id);
         data = {
           date: currentDate(),
           name: $("#page_title").text() + " " + currentDate(),
