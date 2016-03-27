@@ -1,4 +1,4 @@
-Bet = require './bet'
+Bet = require './../lib/bet'
 
 class BaseRobot
   constructor: (options = {}) ->
@@ -7,7 +7,10 @@ class BaseRobot
     @stepsCount = options.stepsCount
     @profitKoef = options.profitKoef
     @puts = options.puts || false
-    @betsData = []
+    @betsData = options.betsData || []
+    for el in @betsData
+      @money -= el.value
+
     @matchData = []
 
   play: (data) =>

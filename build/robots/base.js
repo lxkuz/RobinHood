@@ -3,10 +3,11 @@
   var BaseRobot, Bet,
     bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
-  Bet = require('./bet');
+  Bet = require('./../lib/bet');
 
   BaseRobot = (function() {
     function BaseRobot(options) {
+      var el, i, len, ref;
       if (options == null) {
         options = {};
       }
@@ -18,7 +19,12 @@
       this.stepsCount = options.stepsCount;
       this.profitKoef = options.profitKoef;
       this.puts = options.puts || false;
-      this.betsData = [];
+      this.betsData = options.betsData || [];
+      ref = this.betsData;
+      for (i = 0, len = ref.length; i < len; i++) {
+        el = ref[i];
+        this.money -= el.value;
+      }
       this.matchData = [];
     }
 

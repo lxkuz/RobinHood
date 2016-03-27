@@ -7,7 +7,7 @@
   _ = require('underscore');
 
   test = function() {
-    var CarefulRobot, GreedyRobot, GreedyWLBRobot, MatchDataFactory, SmartRobot, SmartWavesWLBRobot, WavesRobot, bookmakerKoef, bookmakerSafeKoef, carefulRobot, delta, factory, gamesCount, gamesData, greedyRobot, greedyWLBRobot, i, len, money, obj, profitKoef, puts, ref, res, results, simpleBet, simpleRobot, smartRobot, smartWavesWLBRobot, stepsCount;
+    var BackupWFBRobot, CarefulRobot, GreedyRobot, GreedyWLBRobot, MatchDataFactory, SmartRobot, SmartWavesWLBRobot, WavesRobot, backupWFBRobot, bookmakerKoef, bookmakerSafeKoef, carefulRobot, delta, factory, gamesCount, gamesData, greedyRobot, greedyWLBRobot, i, len, money, obj, profitKoef, puts, ref, res, results, simpleBet, simpleRobot, smartRobot, smartWavesWLBRobot, stepsCount;
     stepsCount = 185;
     bookmakerKoef = 0.6;
     bookmakerSafeKoef = 0.95;
@@ -73,6 +73,14 @@
       profitKoef: profitKoef,
       puts: puts
     });
+    BackupWFBRobot = require('../robots/backup-wfb');
+    backupWFBRobot = new BackupWFBRobot({
+      bet: simpleBet,
+      money: money,
+      stepsCount: stepsCount,
+      profitKoef: profitKoef,
+      puts: puts
+    });
     res = [];
     res.push(RoboTest('Simple Waves robot', simpleRobot, gamesData, puts));
     res.push(RoboTest('Careful Waves robot', carefulRobot, gamesData, puts));
@@ -80,6 +88,7 @@
     res.push(RoboTest('Greedy Waves with last bet robot', greedyWLBRobot, gamesData, puts));
     res.push(RoboTest('Smart Waves robot', smartRobot, gamesData, puts));
     res.push(RoboTest('Smart Waves with last bet robot', smartWavesWLBRobot, gamesData, puts));
+    res.push(RoboTest('Backup with first bet robot', backupWFBRobot, gamesData, puts));
     ref = _.sortBy(res, function(obj) {
       return -obj.value;
     });
