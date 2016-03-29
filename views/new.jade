@@ -1,0 +1,13 @@
+html
+    head
+        title!= title
+    body
+        h1= title
+        form(method='POST' action="/watch")
+            .field
+                input#url-input(name="url")
+                label(for="url-input")
+            .field
+                select(name="type")
+                    option(value="watcher") Следящий робот
+            input#submit(type="submit" value="Создать")

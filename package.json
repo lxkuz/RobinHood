@@ -7,7 +7,7 @@
     "test": "test",
     "start": "node build/lib/telegram.js",
     "watch": "coffee -w -c -o build src",
-    "server": "node build/server/index.js"
+    "server": "nodemon build/server/index.js"
   },
   "repository": {
     "type": "git",

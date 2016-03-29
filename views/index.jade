@@ -2,13 +2,24 @@ html
     head
         title!= title
     body
-        for arr, name in data
-            h2!= name
-            table
-                tr
-                    td П1
-                    td П2
-                for obj in arr
-                    tr
-                        td= obj.p1
-                        td= obj.p2
+        .messages= message
+        a(href='/new') Создать робота
+        h4 Активные роботы
+        ul
+            for robot in robots
+                li= JSON.stringify(robot)
+                //li
+                //    .url= robot.get('url')
+                //    .type= robot.get('type')
+
+
+        //for arr, name in data
+        //    h2!= name
+        //    table
+        //        tr
+        //            td П1
+        //            td П2
+        //        for obj in arr
+        //            tr
+        //                td= obj.p1
+        //                td= obj.p2

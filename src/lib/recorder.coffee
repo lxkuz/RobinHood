@@ -1,11 +1,3 @@
-Sequelize = require 'Sequelize'
-
-sequelize = new Sequelize 'development', 'test', 'test',
-  host: 'localhost'
-  dialect: 'sqlite'
-  storage: './db/development.sqlite'
-
-
 SportEvent = sequelize.define 'sport_event',
   id:
     type: Sequelize.INTEGER
