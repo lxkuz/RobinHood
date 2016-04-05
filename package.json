@@ -7,7 +7,8 @@
     "test": "test",
     "start": "node build/lib/telegram.js",
     "watch": "coffee -w -c -o build src",
-    "server": "nodemon build/server/index.js"
+    "server": "nodemon build/server/index.js",
+    "robovisor": "node build/lib/robovisor.js"
   },
   "repository": {
     "type": "git",
@@ -20,6 +21,7 @@
   },
   "homepage": "https://github.com/lxkuz/RobinHood#readme",
   "dependencies": {
+    "body-parser": "^1.15.0",
     "casperjs": "^1.1.0-beta5",
     "config": "^1.19.0",
     "express": "^4.13.4",

@@ -7,7 +7,15 @@ Robot = ActiveRecord.define 'robots',
     primaryKey: true
   type: Sequelize.STRING
   url: Sequelize.TEXT
+  name: Sequelize.STRING
+  state:
+    type: Sequelize.STRING
+    defaultValue: 'new'
+  pid: Sequelize.INTEGER
+  gameData: Sequelize.TEXT
 ,
   freezeTableName: true
+
+Robot.sync()
 
 module.exports = Robot

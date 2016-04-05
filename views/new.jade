@@ -1,13 +1,18 @@
-html
-    head
-        title!= title
-    body
-        h1= title
-        form(method='POST' action="/watch")
-            .field
-                input#url-input(name="url")
-                label(for="url-input")
-            .field
-                select(name="type")
+extends ./layout
+
+block content
+    form.form-horizontal(role="form" method='POST' action="/robots")
+        .control-group
+            label(for="url-input" class="col-sm-2 control-label") Название
+            .col-sm-10
+                input.form-control#url-input(name="name")
+        .control-group
+            label(for="url-input" class="col-sm-2 control-label") Адрес игры на сайте
+            .col-sm-10
+                input.form-control#url-input(name="url")
+        .control-group
+            label(for="url-input" class="col-sm-2 control-label") Тип робота
+            .col-sm-10
+                select.form-control(name="type")
                     option(value="watcher") Следящий робот
-            input#submit(type="submit" value="Создать")
+        button.btn.btn-success Создать

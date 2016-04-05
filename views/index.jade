@@ -1,25 +1,33 @@
-html
-    head
-        title!= title
-    body
-        .messages= message
-        a(href='/new') Создать робота
-        h4 Активные роботы
-        ul
-            for robot in robots
-                li= JSON.stringify(robot)
-                //li
-                //    .url= robot.get('url')
-                //    .type= robot.get('type')
+extends ./layout
+
+block content
+    .messages= message
+    a.btn.btn-default(href='/new') Создать робота
+    h2 Активные роботы
+    table.table.table-striped
+        for robot in robots
+            tr
+                td= robot.get('id')
+                td.face= robot.get('name')
+                td= robot.get('state')
+                td= robot.get('gameData')
+                td
+                    .button
+                        form(method='post', action='/robots/' + robot.id)
+                            input.btn.btn-danger(type='submit', value='Удалить')
+
+            //li
+            //    .url= robot.get('url')
+            //    .type= robot.get('type')
 
 
-        //for arr, name in data
-        //    h2!= name
-        //    table
-        //        tr
-        //            td П1
-        //            td П2
-        //        for obj in arr
-        //            tr
-        //                td= obj.p1
-        //                td= obj.p2
+    //for arr, name in data
+    //    h2!= name
+    //    table
+    //        tr
+    //            td П1
+    //            td П2
+    //        for obj in arr
+    //            tr
+    //                td= obj.p1
+    //                td= obj.p2
