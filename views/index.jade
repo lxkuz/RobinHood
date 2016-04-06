@@ -5,32 +5,32 @@ block content
     a.btn.btn-default(href='/new') Создать робота
     h2 Активные роботы
     table.table.table-striped
-        for robot in robots
+        thead
             tr
-                td= robot.get('id')
-                td.face= robot.get('name')
-                td= robot.get('state')
-                td= robot.get('gameData')
+                td ID
+                td Название
+                td Состояние
+                td PID
                 td
-                    .button
-                        a.btn.default-btn(href='/robots/' + robot.id) Подробнее
                 td
-                    .button
-                        form(method='post', action='/robots/' + robot.id)
-                            input.btn.btn-danger(type='submit', value='Удалить')
+        tbody
+            for robot in robots
+                tr
+                    td= robot.get('id')
+                    td= robot.get('name')
+                    td= robot.get('state')
+                    td= robot.get('pid')
+                    td
+                        .button
+                            a.btn.btn-default(href='/robots/' + robot.id) Подробнее
+                    td
+                        .button
+                            form(method='post', action='/robots/' + robot.id)
+                                input.btn.btn-danger(type='submit', value='Удалить')
 
-            //li
-            //    .url= robot.get('url')
-            //    .type= robot.get('type')
-
-
-    //for arr, name in data
-    //    h2!= name
-    //    table
-    //        tr
-    //            td П1
-    //            td П2
-    //        for obj in arr
-    //            tr
-    //                td= obj.p1
-    //                td= obj.p2
+    .robovisor
+        h2 Запустить роботов
+        form(method='post', action='/robovisor/start')
+            input.btn.btn-success(type='submit', value='Запуск')
+        form(method='post', action='/robovisor/stop')
+            input.btn.btn-danger(type='submit', value='Остановить')

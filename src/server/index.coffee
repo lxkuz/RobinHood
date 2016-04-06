@@ -3,7 +3,7 @@ reload = require('require-reload')(require)
 #Watcher = require('../lib/watcher')
 Robot = require '../models/robot'
 bodyParser = require('body-parser')
-
+robovisor = require '../lib/robovisor'
 app = express()
 app.set('view engine', 'jade')
 app.use(express.static('../../public'));
@@ -35,6 +35,15 @@ app.post '/robots/:id', (req, res) ->
     robot.destroy()
   .then ->
     res.redirect('/')
+
+app.post '/robovisor/start', (req, res) ->
+  robovisor.start ->
+    res.redirect('/')
+
+app.post '/robovisor/stop', (req, res) ->
+  robovisor.stop ->
+    res.redirect('/')
+
 
 app.get '/robots/:id', (req, res) ->
   Robot.find

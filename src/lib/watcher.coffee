@@ -24,12 +24,18 @@ class RobinHoodWatcher
       response.on 'end', =>
         data = JSON.parse(body)
         if data['Value'] && !data['Value']['Finished']
-          obj =
-            p1: data['Value']['Events'][0]['C']
-            p2: data['Value']['Events'][1]['C']
-            locked:
-              p1: data['Value']['Events'][0]['B']
-              p2: data['Value']['Events'][1]['B']
+          obj = {locked: {}}
+          for event in data['Value']['Events']
+            switch event['T']
+              when 1
+                obj.p1 = event['C']
+                obj.locked.p1 = event['B']
+              when 2
+                obj.x = event['C']
+                obj.locked.x = event['B']
+              when 3
+                obj.p2 = event['C']
+                obj.locked.p2 = event['B']
 
           @options.onStep obj
           setTimeout @readData, 5000

@@ -36,17 +36,29 @@
             return body += chunk;
           });
           return response.on('end', function() {
-            var data, obj;
+            var data, event, i, len, obj, ref;
             data = JSON.parse(body);
             if (data['Value'] && !data['Value']['Finished']) {
               obj = {
-                p1: data['Value']['Events'][0]['C'],
-                p2: data['Value']['Events'][1]['C'],
-                locked: {
-                  p1: data['Value']['Events'][0]['B'],
-                  p2: data['Value']['Events'][1]['B']
-                }
+                locked: {}
               };
+              ref = data['Value']['Events'];
+              for (i = 0, len = ref.length; i < len; i++) {
+                event = ref[i];
+                switch (event['T']) {
+                  case 1:
+                    obj.p1 = event['C'];
+                    obj.locked.p1 = event['B'];
+                    break;
+                  case 2:
+                    obj.x = event['C'];
+                    obj.locked.x = event['B'];
+                    break;
+                  case 3:
+                    obj.p2 = event['C'];
+                    obj.locked.p2 = event['B'];
+                }
+              }
               _this.options.onStep(obj);
               return setTimeout(_this.readData, 5000);
             } else {
