@@ -12,34 +12,23 @@
   https = require("https");
 
   RobinHoodWatcher = (function() {
-    function RobinHoodWatcher(url, callback1) {
+    function RobinHoodWatcher(url, options) {
       var baseUrl, eventId, eventName;
       this.url = url;
-      this.callback = callback1;
+      this.options = options;
       this.readData = bind(this.readData, this);
-      this.stopReadData = bind(this.stopReadData, this);
       eventName = _(this.url.split("/")).chain().compact().reverse().value()[0];
       eventId = eventName.split("-")[0];
       baseUrl = this.url.split("https://")[1].split("/")[0];
-      this.gameUrl = {
+      this.requestOptions = {
         host: baseUrl,
         path: "/LiveFeed/GetGame?id=" + eventId + "&lng=ru&cfview=0"
       };
-      this.options = this.gameUrl;
-      this.gameData = [];
       this.readData();
     }
 
-    RobinHoodWatcher.prototype.stopReadData = function() {
-      if (!this.counter) {
-        this.counter = 0;
-      }
-      this.counter += 1;
-      return this.counter > 100;
-    };
-
-    RobinHoodWatcher.prototype.readData = function(callback) {
-      return https.get(this.options, (function(_this) {
+    RobinHoodWatcher.prototype.readData = function() {
+      return https.get(this.requestOptions, (function(_this) {
         return function(response) {
           var body;
           body = "";
@@ -49,19 +38,20 @@
           return response.on('end', function() {
             var data, obj;
             data = JSON.parse(body);
-            obj = {
-              p1: data['Value']['Events'][0]['C'],
-              p2: data['Value']['Events'][1]['C']
-            };
-            console.log(obj);
-            _this.gameData.push(obj);
-            return setTimeout(function() {
-              if (_this.stopReadData()) {
-                return callback(_this.gameData);
-              } else {
-                return _this.readData(callback);
-              }
-            }, 3000);
+            if (data['Value']) {
+              obj = {
+                p1: data['Value']['Events'][0]['C'],
+                p2: data['Value']['Events'][1]['C'],
+                locked: {
+                  p1: data['Value']['Events'][0]['B'],
+                  p2: data['Value']['Events'][1]['B']
+                }
+              };
+              _this.options.onStep(obj);
+              return setTimeout(_this.readData, 5000);
+            } else {
+              return _this.options.onFinish(data);
+            }
           });
         };
       })(this));
@@ -80,11 +70,25 @@
     Robot.findById(robotId).then(function(robot) {
       var processUrl;
       processUrl = robot.get('url');
-      return new RobinHoodWatcher(processUrl, function(data) {
-        robot.set({
-          gameData: JSON.stringify(data)
-        });
-        return robot.save();
+      return new RobinHoodWatcher(processUrl, {
+        onStep: function(obj) {
+          var baseData, gameData;
+          gameData = robot.get('gameData');
+          baseData = gameData ? JSON.parse(gameData) : [];
+          console.log(baseData);
+          baseData.push(obj);
+          robot.set({
+            gameData: JSON.stringify(baseData)
+          });
+          return robot.save();
+        },
+        onFinish: function() {
+          robot.set({
+            state: 'done'
+          });
+          robot.save();
+          return console.log('FINISH');
+        }
       });
     });
   }

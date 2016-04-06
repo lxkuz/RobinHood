@@ -13,6 +13,9 @@ block content
                 td= robot.get('gameData')
                 td
                     .button
+                        a.btn.default-btn(href='/robots/' + robot.id) Подробнее
+                td
+                    .button
                         form(method='post', action='/robots/' + robot.id)
                             input.btn.btn-danger(type='submit', value='Удалить')
 

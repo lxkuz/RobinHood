@@ -36,5 +36,13 @@ app.post '/robots/:id', (req, res) ->
   .then ->
     res.redirect('/')
 
+app.get '/robots/:id', (req, res) ->
+  Robot.find
+    id: req.param('id')
+  .then (robot) ->
+    res.render 'show',
+      robot: robot
+
+
 app.listen 3000, ->
   console.log('RobinHood Viewer listen:3000')

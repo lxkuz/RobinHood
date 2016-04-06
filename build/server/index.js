@@ -54,6 +54,16 @@
     });
   });
 
+  app.get('/robots/:id', function(req, res) {
+    return Robot.find({
+      id: req.param('id')
+    }).then(function(robot) {
+      return res.render('show', {
+        robot: robot
+      });
+    });
+  });
+
   app.listen(3000, function() {
     return console.log('RobinHood Viewer listen:3000');
   });
