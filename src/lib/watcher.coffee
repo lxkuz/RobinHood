@@ -23,7 +23,7 @@ class RobinHoodWatcher
 
       response.on 'end', =>
         data = JSON.parse(body)
-        if data['Value']
+        if data['Value'] && !data['Value']['Finished']
           obj =
             p1: data['Value']['Events'][0]['C']
             p2: data['Value']['Events'][1]['C']
