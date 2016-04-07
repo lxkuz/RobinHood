@@ -1,7 +1,9 @@
 extends ./layout
 
 block content
-    .title= robot.get('name')
-    .url= robot.get('url')
+    h2.title= robot.get('name')
+    .url
+        a(href=robot.get('url'), target='_blank') Посмотреть на сайте
+
     .state= robot.get('state')
-    .state= robot.get('gameData')
+    .game-chart(data-chart=robot.get('gameData'))

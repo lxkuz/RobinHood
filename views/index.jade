@@ -13,16 +13,23 @@ block content
                 td PID
                 td
                 td
+                td
         tbody
             for robot in robots
                 tr
                     td= robot.get('id')
-                    td= robot.get('name')
+                    td
+                      a(href=robot.get('url') target='_blank')= robot.get('name')
                     td= robot.get('state')
                     td= robot.get('pid')
                     td
                         .button
                             a.btn.btn-default(href='/robots/' + robot.id) Подробнее
+                    td
+                        if robot.get('state') == 'working'
+                            .button
+                                form(method='post', action='/robots/' + robot.id + '/kill')
+                                    input.btn.btn-danger(type='submit', value='Остановить')
                     td
                         .button
                             form(method='post', action='/robots/' + robot.id)
@@ -32,5 +39,5 @@ block content
         h2 Запустить роботов
         form(method='post', action='/robovisor/start')
             input.btn.btn-success(type='submit', value='Запуск')
-        form(method='post', action='/robovisor/stop')
-            input.btn.btn-danger(type='submit', value='Остановить')
+        //form(method='post', action='/robovisor/stop')
+        //    input.btn.btn-danger(type='submit', value='Остановить')

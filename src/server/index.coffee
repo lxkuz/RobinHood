@@ -1,11 +1,10 @@
+fs = require 'fs'
+path = require 'path'
 npid = require 'npid'
-express = require('express')
-reload = require('require-reload')(require)
-#Watcher = require('../lib/watcher')
+express = require 'express'
 Robot = require '../models/robot'
 bodyParser = require('body-parser')
 robovisor = require '../lib/robovisor'
-fs = require 'fs'
 
 try
   filePath = './pids/server.pid'
@@ -20,7 +19,7 @@ app = express()
 app.set('port', 8484)
 app.listen(app.get('port'))
 app.set('view engine', 'jade')
-app.use(express.static('../../public'));
+app.use(express.static(path.join(__dirname, '../../public')));
 app.use(bodyParser.urlencoded())
 
 app.get '/', (req, res) ->
@@ -58,11 +57,16 @@ app.post '/robovisor/stop', (req, res) ->
   robovisor.stop ->
     res.redirect('/')
 
+app.post '/robots/:id/kill', (req, res) ->
+  Robot.findById(req.param('id')).then (robot) ->
+    process.kill(robot.get('pid'))
+    robot.set
+      state: 'stopped'
+    robot.save().then ->
+      res.redirect('/')
 
 app.get '/robots/:id', (req, res) ->
-  Robot.find
-    id: req.param('id')
-  .then (robot) ->
+  Robot.findById(req.param('id')).then (robot) ->
     res.render 'show',
       robot: robot
 
