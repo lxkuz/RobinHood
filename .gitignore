@@ -44,4 +44,7 @@ config/lives.js
 
 #DB
 db/*
+
 pids/*
+
+log/*

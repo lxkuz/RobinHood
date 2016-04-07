@@ -5,15 +5,20 @@ reload = require('require-reload')(require)
 Robot = require '../models/robot'
 bodyParser = require('body-parser')
 robovisor = require '../lib/robovisor'
+fs = require 'fs'
 
 try
-  pid = npid.create './pids/server.pid'
+  filePath = './pids/server.pid'
+  fs.unlinkSync filePath if fs.existsSync(filePath)
+  pid = npid.create filePath
   pid.removeOnExit()
 catch err
   console.log err
   process.exit 1
 
 app = express()
+app.set('port', 8484)
+app.listen(app.get('port'))
 app.set('view engine', 'jade')
 app.use(express.static('../../public'));
 app.use(bodyParser.urlencoded())

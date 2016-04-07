@@ -1,0 +1,1 @@
+mkdir db && mkdir log && mkdir pids && npm install && npm run production

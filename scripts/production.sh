@@ -1,0 +1,1 @@
+nohup node build/server/index.js > ./log/production.log 2>&1 &

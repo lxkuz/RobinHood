@@ -5,10 +5,13 @@
   "main": "telegram.js",
   "scripts": {
     "test": "test",
+    "production": "sh ./scripts/production.sh",
     "start": "node build/lib/telegram.js",
+    "init": "sh ./scripts/init.sh",
     "watch": "coffee -w -c -o build src",
     "server": "nodemon build/server/index.js",
-    "robovisor": "node build/lib/robovisor.js"
+    "robovisor": "node build/lib/robovisor.js",
+    "stop": "kill -9 `cat ./pids/server.pid` && rm ./pids/server.pid"
   },
   "repository": {
     "type": "git",
