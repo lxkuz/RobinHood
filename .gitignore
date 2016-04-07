@@ -43,4 +43,5 @@ config/default.json
 config/lives.js
 
 #DB
-db
+db/*
+pids/*

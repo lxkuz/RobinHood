@@ -1,9 +1,18 @@
+npid = require 'npid'
 express = require('express')
 reload = require('require-reload')(require)
 #Watcher = require('../lib/watcher')
 Robot = require '../models/robot'
 bodyParser = require('body-parser')
 robovisor = require '../lib/robovisor'
+
+try
+  pid = npid.create './pids/server.pid'
+  pid.removeOnExit()
+catch err
+  console.log err
+  process.exit 1
+
 app = express()
 app.set('view engine', 'jade')
 app.use(express.static('../../public'));
