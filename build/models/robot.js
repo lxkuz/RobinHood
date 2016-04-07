@@ -4,7 +4,7 @@
 
   ActiveRecord = require('./active-record');
 
-  Sequelize = require('Sequelize');
+  Sequelize = require('sequelize');
 
   Robot = ActiveRecord.define('robots', {
     id: {
