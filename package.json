@@ -11,7 +11,8 @@
     "clientwatch": "coffee -w -c -o public/js public/coffee",
     "start": "nodemon build/server/index.js",
     "robovisor": "node build/lib/robovisor.js",
-    "stop": "kill -9 `cat ./pids/server.pid` && rm ./pids/server.pid"
+    "stop": "kill -9 `cat ./pids/server.pid` && rm ./pids/server.pid",
+    'deploy': 'sh ./scripts/deploy.sh'
   },
   "repository": {
     "type": "git",
