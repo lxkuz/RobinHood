@@ -40,14 +40,9 @@ app.get '/new', (req, res) ->
     title: 'Новый робот'
 
 app.post '/robots/:id', (req, res) ->
-  console.log("DELETE ROBOT!!!!!!!!")
-  Robot.find
-    id: req.param('id')
-  .then (robot) ->
-    console.log(robot)
-    robot.destroy()
-  .then ->
-    res.redirect('/')
+  Robot.findById(req.param('id')).then (robot) ->
+    robot.destroy().then ->
+      res.redirect('/')
 
 app.post '/robovisor/start', (req, res) ->
   robovisor.start ->

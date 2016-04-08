@@ -66,14 +66,10 @@
   });
 
   app.post('/robots/:id', function(req, res) {
-    console.log("DELETE ROBOT!!!!!!!!");
-    return Robot.find({
-      id: req.param('id')
-    }).then(function(robot) {
-      console.log(robot);
-      return robot.destroy();
-    }).then(function() {
-      return res.redirect('/');
+    return Robot.findById(req.param('id')).then(function(robot) {
+      return robot.destroy().then(function() {
+        return res.redirect('/');
+      });
     });
   });
 
