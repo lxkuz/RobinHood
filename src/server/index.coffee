@@ -14,7 +14,6 @@ try
   pid.removeOnExit()
 catch err
   console.log err
-  process.exit 1
 
 app = express()
 app.set('port', 8484)
