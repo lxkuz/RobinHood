@@ -10,5 +10,10 @@ block content
 
     .state= robot.get('state')
     .game-chart(data-chart=robot.get('gameData'))
-    .play-data= JSON.stringify(playData)
-
+    ul.play-data
+        for bets, algorithm in playData
+            li
+                .name= helpers.algorithmLabel(algorithm)
+                ul.bets
+                    for str in helpers.betsParser(bets)
+                        li= str

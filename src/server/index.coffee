@@ -6,6 +6,7 @@ Robot = require '../models/robot'
 bodyParser = require('body-parser')
 robovisor = require '../lib/robovisor'
 makePlayData = require '../lib/make-play-data'
+viewHelpers = require '../lib/view-helpers'
 
 try
   filePath = './pids/server.pid'
@@ -60,7 +61,8 @@ app.post '/robovisor/stop', (req, res) ->
 
 app.post '/robots/:id/kill', (req, res) ->
   Robot.findById(req.param('id')).then (robot) ->
-    process.kill(robot.get('pid'))
+    try
+      process.kill(robot.get('pid'))
     robot.set
       state: 'stopped'
     robot.save().then ->
@@ -70,7 +72,8 @@ app.get '/robots/:id', (req, res) ->
   Robot.findById(req.param('id')).then (robot) ->
     res.render 'show',
       robot: robot,
-      playData: makePlayData(robot)
+      playData: makePlayData(robot),
+      helpers: viewHelpers
 
 app.listen 3000, ->
   console.log('RobinHood Viewer listen:3000')
