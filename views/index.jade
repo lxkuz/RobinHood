@@ -30,6 +30,11 @@ block content
                             .button
                                 form(method='post', action='/robots/' + robot.id + '/kill')
                                     input.btn.btn-danger(type='submit', value='Остановить')
+                        else
+                            .button
+                                form(method='post', action='/robots/' + robot.id + '/start')
+                                    input.btn.btn-success(type='submit', value='Запустить')
+
                     td
                         .button
                             form(method='post', action='/robots/' + robot.id)

@@ -12,7 +12,8 @@
     "start": "nodemon build/server/index.js",
     "robovisor": "node build/lib/robovisor.js",
     "stop": "kill -9 `cat ./pids/server.pid` && rm ./pids/server.pid",
-    'deploy': 'sh ./scripts/deploy.sh'
+    "deploy": "sh ./scripts/deploy.sh",
+    "deploystart": "ssh robinhood@mystand.ru 'cd repository && npm run production'"
   },
   "repository": {
     "type": "git",

@@ -7,3 +7,5 @@ block content
 
     .state= robot.get('state')
     .game-chart(data-chart=robot.get('gameData'))
+    .play-data= JSON.stringify(playData)
+

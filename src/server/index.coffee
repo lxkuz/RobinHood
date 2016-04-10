@@ -5,6 +5,7 @@ express = require 'express'
 Robot = require '../models/robot'
 bodyParser = require('body-parser')
 robovisor = require '../lib/robovisor'
+makePlayData = require '../lib/make-play-data'
 
 try
   filePath = './pids/server.pid'
@@ -39,14 +40,20 @@ app.get '/new', (req, res) ->
   res.render 'new',
     title: 'Новый робот'
 
+app.post '/robovisor/start', (req, res) ->
+  robovisor.start ->
+    res.redirect('/')
+
+app.post '/robots/:id/start', (req, res) ->
+  Robot.findById(req.param('id')).then (robot) ->
+    robovisor.startInstance robot, ->
+      res.redirect('/')
+
 app.post '/robots/:id', (req, res) ->
   Robot.findById(req.param('id')).then (robot) ->
     robot.destroy().then ->
       res.redirect('/')
 
-app.post '/robovisor/start', (req, res) ->
-  robovisor.start ->
-    res.redirect('/')
 
 app.post '/robovisor/stop', (req, res) ->
   robovisor.stop ->
@@ -63,8 +70,8 @@ app.post '/robots/:id/kill', (req, res) ->
 app.get '/robots/:id', (req, res) ->
   Robot.findById(req.param('id')).then (robot) ->
     res.render 'show',
-      robot: robot
-
+      robot: robot,
+      playData: makePlayData(robot)
 
 app.listen 3000, ->
   console.log('RobinHood Viewer listen:3000')

@@ -1,1 +1,1 @@
-ssh robunhood@mystand.ru 'cd repository && npm run stop && git pull origin master && npm install && npm run production'
+ssh robinhood@mystand.ru 'cd repository && npm run stop && git pull origin master && npm install'

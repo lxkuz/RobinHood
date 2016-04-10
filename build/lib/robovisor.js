@@ -42,6 +42,26 @@
       });
     };
 
+    Robovisor.prototype.startInstance = function(robot, callback) {
+      var watcherProcess;
+      watcherProcess = spawn('node', ['build/lib/watcher', robot.get('id')]);
+      watcherProcess.stdout.on('data', function(data) {
+        return console.log("stdout: " + data);
+      });
+      watcherProcess.stderr.on('data', function(data) {
+        return console.log("stderr: " + data);
+      });
+      watcherProcess.on('close', function(code) {
+        return console.log("child watcherProcess exited with code " + code);
+      });
+      console.log("init watcherProcess for " + (robot.get('name')));
+      robot.set({
+        pid: watcherProcess.pid,
+        state: 'working'
+      });
+      return robot.save().then(callback);
+    };
+
     Robovisor.prototype.stop = function(callback) {
       return Robot.findAll({
         where: {
