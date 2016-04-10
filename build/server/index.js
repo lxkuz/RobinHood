@@ -26,7 +26,6 @@
   } catch (error) {
     err = error;
     console.log(err);
-    process.exit(1);
   }
 
   app = express();
